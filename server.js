@@ -27,6 +27,13 @@ app.get("/api/config/paypal", (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
+  next();
+});
+
 const PORT = process.env.PORT || 1000;
 
 app.listen(PORT, console.log(`server run in port ${PORT}`));
+
+
