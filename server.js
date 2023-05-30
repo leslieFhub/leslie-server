@@ -7,12 +7,18 @@ import { errorHandler, notFound } from "./Middleware/Errors.js";
 import userRouter from "./Routes/UserRoutes.js";
 import orderRouter from "./Routes/orderRoutes.js";
 import cors from "cors";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 dotenv.config();
 connectDatabase();
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+// Get __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // API
 app.use("/api/import", ImportData);
@@ -41,5 +47,3 @@ app.use((req, res, next) => {
 const PORT = process.env.PORT || 1000;
 
 app.listen(PORT, console.log(`server run in port ${PORT}`));
-
-
