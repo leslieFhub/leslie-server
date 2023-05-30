@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const connectDatabase = async () => {
   try {
+    mongoose.set('strictQuery', false); // Add this line to set the strictQuery option
+
     const conn = await mongoose.connect(process.env.MONGO_URL, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
