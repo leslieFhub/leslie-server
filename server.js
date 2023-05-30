@@ -35,6 +35,11 @@ app.get("/*", function(req, res) {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+app.use((req, res, next) => {
+  res.setHeader("Cache-Control", "no-cache, no-store"); // Disable caching for all responses
+  next();
+});
+
 // ERROR HANDLER
 app.use(notFound);
 app.use(errorHandler);
