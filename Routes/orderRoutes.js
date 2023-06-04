@@ -1,6 +1,6 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
-import { admin, protect } from "../Middleware/AuthMiddleware.js";
+import { protect } from "../Middleware/AuthMiddleware.js";
 import Order from "./../Models/OrderModel.js";
 
 const orderRouter = express.Router();
@@ -46,7 +46,6 @@ orderRouter.post(
 orderRouter.get(
   "/all",
   protect,
-  admin,
   asyncHandler(async (req, res) => {
     const orders = await Order.find({})
       .sort({ _id: -1 })
@@ -110,7 +109,7 @@ orderRouter.put(
   })
 );
 
-// ORDER IS PAID
+// ORDER IS DELIVERED
 orderRouter.put(
   "/:id/delivered",
   protect,
@@ -130,4 +129,25 @@ orderRouter.put(
   })
 );
 
+// STORE ORDER DETAILS
+orderRouter.post(
+  "/store-order",
+  protect,
+  asyncHandler(async (req, res) => {
+    const { orderId, discountType, note } = req.body;
+
+    const order = new Order({
+      orderId,
+      discountType,
+      note,
+      user: req.user._id,
+    });
+
+    const createdOrder = await order.save();
+    res.status(201).json(createdOrder);
+  })
+);
+
 export default orderRouter;
+
+
